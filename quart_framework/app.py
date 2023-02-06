@@ -1,13 +1,10 @@
-from quart import Quart
-from quart_motor import Motor
+from quart import Quart, request
+app = Quart(__name__)
 
-app  =Quart(__name__)
-app.config["MONGO_URI"] = "mongodb://localhost:27017/free5gc"
-mongo = Motor(app)
+from src.database.database import connect_to_database
+connect_to_database()
 
-@app.get("/")
-async def index():
-    return "hello"
+from src.api.nnrf_nfm.v1.endpoints.nf_instances import *
 
-# if __name__ == "__main__":
-#     app.run()
+if __name__ == "__main__":
+    app.run() # type: ignore
